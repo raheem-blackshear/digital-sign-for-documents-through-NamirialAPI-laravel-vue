@@ -16,7 +16,7 @@
             <md-card-content>
                <div class="md-layout md-gutter text-center"> 
                 <div class="md-layout-item md-size-25 md-small-size-100">
-                        <md-radio value="personafisica">Persona fisica</md-radio>
+                        <md-radio v-model.lazy="form.pageOne.Tipodipersona" value="personafisica" >Persona fisica</md-radio>
                  </div>
                  <div class="md-layout-item md-size-25 md-small-size-100">
                         <md-radio v-model.lazy="form.pageOne.Tipodipersona" value="personalegale">Persona legale</md-radio>
@@ -83,36 +83,27 @@
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
                          <label for="Nazionalità1">Nazionalità</label>
-                            <select v-model.lazy="form.pageOne.sectionA.Nazionalità1">
+                            <select v-model.lazy="form.pageOne.sectionA.Nazionalità1" class="formselect">
                             <option v-for="country in formArr.pageOne.sectionA.countries" :key="country" :value="country">{{country}}</option>
                           </select>
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
-                        <md-field>
                          <label for="Regione1">Regione</label>
-                            <md-select  v-model.lazy="form.pageOne.sectionA.Regione" id="Regione1" @md-selected="onRegioneChange">
-                            <md-option v-for="region in formArr.pageOne.sectionA.regions" :key="region" :value="region">{{region}}</md-option>
-                          </md-select>
-                          <span class="md-error">The Regione is required</span>
-                       </md-field>
+                            <select  v-model.lazy="form.pageOne.sectionA.Regione" class="formselect" id="Regione1" v-on:change="onRegioneChange($event.target.value,'Regione1')">
+                            <option v-for="region in formArr.pageOne.sectionA.regions" :key="region" :value="region">{{region}}</option>
+                          </select>
                     </div>
                       <div class="md-layout-item md-size-33 md-small-size-100">
-                        <md-field>
                          <label for="Provincia1">Provincia</label>
-                            <md-select  v-model.lazy="form.pageOne.sectionA.Provincia" id="Provincia1" @md-selected="onProvinciaChange">
-                            <md-option v-for="province in formArr.pageOne.sectionA.provinces" :key="province" :value="province">{{province}}</md-option>
-                          </md-select>
-                          <span class="md-error">The Provincia is required</span>
-                       </md-field>
+                            <select  v-model.lazy="form.pageOne.sectionA.Provincia" class="formselect" id="Provincia1" v-on:change="onProvinciaChange($event.target.value,'Provincia1')">
+                            <option v-for="province in formArr.pageOne.sectionA.provinces" :key="province" :value="province">{{province}}</option>
+                          </select>
                     </div>
                       <div class="md-layout-item md-size-33 md-small-size-100">
-                        <md-field>
                          <label for="Luogodinascita1">Luogo di nascita</label>
-                            <md-select  v-model.lazy="form.pageOne.sectionA.Luogodinascita1" id="Luogodinascita1">
-                            <md-option v-for="commune in formArr.pageOne.sectionA.communes" :key="commune" :value="commune">{{commune}}</md-option>
-                          </md-select>
-                          <span class="md-error">The Luogo di nascita is required</span>
-                       </md-field>
+                            <select  v-model.lazy="form.pageOne.sectionA.Luogodinascita1" class="formselect" id="Luogodinascita1">
+                            <option v-for="commune in formArr.pageOne.sectionA.communes" :key="commune" :value="commune">{{commune}}</option>
+                          </select>
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
                         <md-field v-bind:class="{ 'md-invalid': errors.isInvalidCodFisc1 }">
@@ -139,13 +130,10 @@
                         </div>
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
-                        <md-field>
                          <label for="tipodidentità">Tipo d'identità</label>
-                            <md-select  v-model.lazy="form.pageOne.sectionA.tipodidentità" id="tipodidentità">
-                            <md-option v-for="doctype in formArr.pageOne.sectionA.doctypes" :key="doctype" :value="doctype">{{doctype}}</md-option>
-                          </md-select>
-                          <span class="md-error">The Regione is required</span>
-                       </md-field>
+                            <select  v-model.lazy="form.pageOne.sectionA.tipodidentità" id="tipodidentità" class="formselect">
+                            <option v-for="doctype in formArr.pageOne.sectionA.doctypes" :key="doctype" :value="doctype">{{doctype}}</option>
+                          </select>
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
                         <md-field  >
@@ -169,25 +157,19 @@
                         </md-field>
                     </div>
                      <div class="md-layout-item md-size-33 md-small-size-100">
-                        <md-field>
                          <label for="Da1">da</label>
-                            <md-select  v-model.lazy="form.pageOne.sectionA.da1" id="Da1">
-                            <md-option v-for="region in formArr.pageOne.sectionA.dacommunes" :key="region" :value="region">{{region}}</md-option>
-                          </md-select>
-                          <span class="md-error">The Regione is required</span>
-                       </md-field>
+                            <select  v-model.lazy="form.pageOne.sectionA.da1" id="Da1" class="formselect">
+                            <option v-for="region in formArr.pageOne.sectionA.dacommunes" :key="region" :value="region">{{region}}</option>
+                          </select>
                     </div>
                       <div class="md-layout-item md-size-50 md-small-size-100">
-                        <md-field>
                          <label for="localitadirilascio1">Località di rilascio</label>
-                            <md-select  v-model.lazy="form.pageOne.sectionA.Localitadirilascio1" id="localitadirilascio1">
-                            <md-option v-for="region in formArr.pageOne.sectionA.localcommunes" :key="region" :value="region">{{region}}</md-option>
-                          </md-select>
-                          <span class="md-error">The Località di rilascio is required</span>
-                       </md-field>
+                            <select  v-model.lazy="form.pageOne.sectionA.Localitadirilascio1" id="localitadirilascio1" class="formselect">
+                            <option v-for="region in formArr.pageOne.sectionA.localcommunes" :key="region" :value="region">{{region}}</option>
+                          </select>
                     </div>
                     <div class="md-layout-item md-size-50 md-small-size-100">
-                        <md-field  >
+                        <md-field>
                             <span class="Datascadenzadocidentita1">Data scadenza doc. identità</span>
                             <md-input type="date" v-model.lazy="form.pageOne.sectionA.Datascadenzadocidentita1"  md-dense/>
                             <span class="md-error">The Data scadenza doc. identità is required</span>
@@ -200,20 +182,17 @@
                         </md-field>
                      </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
-                        <md-field  >
+                        <md-field>
                             <label for="CAP1">CAP</label>
                             <md-input type="text" v-model.lazy="form.pageOne.sectionA.CAP1"  md-dense/>
                             <span class="md-error">The CAP is required</span>
                         </md-field>
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
-                        <md-field>
                          <label for="Prov1">Prov.</label>
-                            <md-select  v-model.lazy="form.pageOne.sectionA.Prov1" id="Prov1" @md-selected="onProvinciaChange">
-                            <md-option v-for="province in formArr.pageOne.sectionA.provinces1" :key="province" :value="province">{{province}}</md-option>
-                          </md-select>
-                         <span class="md-error">The Prov. is required</span>
-                       </md-field>
+                            <select  v-model.lazy="form.pageOne.sectionA.Prov1" id="Prov1" class="formselect">
+                            <option v-for="province in formArr.pageOne.sectionA.provinces1" :key="province" :value="province">{{province}}</option>
+                          </select>
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
                         <md-field  >
@@ -414,13 +393,10 @@
                         </md-field>
                     </div>
                     <div class="md-layout-item md-size-50 md-small-size-100">
-                        <md-field>
                          <label for="Luogodinascita5">Luogo di nascita</label>
-                            <md-select  v-model.lazy="form.pageOne.sectionA.Luogodinascita5" id="Luogodinascita5">
-                            <md-option v-for="commune in form.pageOne.sectionA.collcommunes" :key="commune" :value="commune">{{commune}}</md-option>
-                          </md-select>
-                          <span class="md-error">The Luogo di nascita is required</span>
-                       </md-field>
+                            <select  v-model.lazy="form.pageOne.sectionA.Luogodinascita5" id="Luogodinascita5" class="formselect">
+                            <option v-for="commune in form.pageOne.sectionA.collcommunes" :key="commune" :value="commune">{{commune}}</option>
+                          </select>
                       </div>
                       <md-card-content>
                 <div class="md-title text-left">
@@ -539,13 +515,10 @@
                         </md-field>
                     </div>
                     <div class="md-layout-item md-size-50 md-small-size-100">
-                        <md-field>
                             <label for="AssLuogodinascita">Luogo di nascita</label>
-                            <md-select  v-model.lazy="form.formTwo.Assicurato2.Luogodinascita" id="AssLuogodinascita">
-                            <md-option v-for="commune in form.formTwo.Assicurato2.communes" :key="commune" :value="commune">{{commune}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Luogo di nascita is required</span>
-                        </md-field>
+                            <select  v-model.lazy="form.formTwo.Assicurato2.Luogodinascita" id="AssLuogodinascita" class="formselect">
+                            <option v-for="commune in form.formTwo.Assicurato2.communes" :key="commune" :value="commune">{{commune}}</option>
+                            </select>
                     </div>
                     <div class="md-layout-item md-size-50 md-small-size-100">
                         <md-field  >
@@ -669,10 +642,9 @@
                     <div class="md-layout-item md-size-33 md-small-size-100">
                         <md-field>
                             <label for="LuogodinascitaA2">Luogo di nascita</label>
-                            <md-select  v-model.lazy="form.formTwo.Assicurato2.Luogodinascita2" id="LuogodinascitaA2">
-                            <md-option v-for="commune in form.formTwo.Assicurato2.communes" :key="commune" :value="commune">{{commune}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Luogo di nascita is required</span>
+                            <select  v-model.lazy="form.formTwo.Assicurato2.Luogodinascita2" id="LuogodinascitaA2" class="formselect">
+                            <option v-for="commune in form.formTwo.Assicurato2.communes" :key="commune" :value="commune">{{commune}}</option>
+                            </select>
                         </md-field>
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100">
@@ -907,13 +879,10 @@
                         </md-field>
                     </div>
                     <div class="md-layout-item md-size-50 md-small-size-100" v-show = 'form.pageOne.sectionB.pagatore == "si"'>
-                        <md-field>
                             <label for="Luogodinascita6">Luogo di nascita</label>
-                            <md-select  v-model.lazy="form.pageTwo.sectionB.Luogodinascita6" id="Luogodinascita6">
-                            <md-option v-for="commune in form.pageTwo.sectionB.communes" :key="commune" :value="commune">{{commune}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Luogo di nascita is required</span>
-                        </md-field>
+                            <select  v-model.lazy="form.pageTwo.sectionB.Luogodinascita6" id="Luogodinascita6" class="formselect">
+                            <option v-for="commune in form.pageTwo.sectionB.communes" :key="commune" :value="commune">{{commune}}</option>
+                            </select>
                     </div>
                 </div>
             </md-card-content>
@@ -989,13 +958,10 @@
                       </md-field>
                     </div>
                     <div class="md-layout-item md-size-33 md-small-size-100" v-show = 'form.pageTwo.sectionC.TitolareEffettivo == "Titolare"'>
-                        <md-field>
                             <label for="Nazionalità1">Residenza</label>
-                            <md-select v-model.lazy="form.pageTwo.sectionC.Residenza">
-                            <md-option v-for="country in formArr.pageTwo.sectionC.countries" :key="country" :value="country">{{country}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Residenza is required</span>
-                        </md-field>
+                            <select v-model.lazy="form.pageTwo.sectionC.Residenza" class="formselect">
+                            <option v-for="country in formArr.pageTwo.sectionC.countries" :key="country" :value="country">{{country}}</option>
+                            </select>
                     </div>
                 </div>
             </md-card-content>
@@ -1340,15 +1306,13 @@
                             <span class="md-error">The Professione is required</span>
                         </md-field>
                     </div>
-                    <div class="md-layout-item md-size-50 md-small-size-100">  
-                      <md-field>
+                    <!-- <div class="md-layout-item md-size-50 md-small-size-100">  
                          <label for="Settore">Settore economico</label>
-                            <md-select v-model.lazy="form.formTwo.Contraente.Settoreeconomico">
-                            <md-option v-for="ecocategory in formArr.formTwo.Contraente.ecocategories" :key="ecocategory.id" :value="ecocategory">{{ecocategory}}</md-option>
-                          </md-select>
+                            <select v-model.lazy="form.formTwo.Contraente.Settoreeconomico">
+                            <option v-for="ecocategory in formArr.formTwo.Contraente.ecocategories" :key="ecocategory" :value="ecocategory">{{ecocategory}}</option>
+                          </select>
                           <span class="md-error">The Settore economico is required</span>
-                       </md-field>
-                    </div>
+                    </div> -->
                 </div>
             </md-card-content>
 
@@ -1563,22 +1527,16 @@
                         </md-field>
                     </div>
                     <div class="md-layout-item md-size-25 md-small-size-100">
-                        <md-field>
                             <label for="Citta2">Città</label>
-                               <md-select  v-model.lazy="form.formTwo.Assicurato.Citta" id="Citta2" @md-selected="onRegioneChange">
-                               <md-option v-for="region in formArr.formTwo.Assicurato.regions" :key="region" :value="region">{{region}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Regione is required</span>
-                        </md-field>
+                               <select  v-model.lazy="form.formTwo.Assicurato.Citta" class="formselect" id="Citta2" v-on:change="onRegioneChange($event.target.value,'Citta2')">
+                               <option v-for="region in formArr.formTwo.Assicurato.regions" :key="region" :value="region">{{region}}</option>
+                            </select>
                     </div>
                     <div class="md-layout-item md-size-25 md-small-size-100">
-                          <md-field>
                             <label for="Provincia2">Provincia</label>
-                            <md-select  v-model.lazy="form.formTwo.Assicurato.Provincia" id="Provincia2">
-                            <md-option v-for="province in formArr.formTwo.Assicurato.provinces" :key="province" :value="province">{{province}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Provincia is required</span>
-                         </md-field>
+                            <select  class="formselect" v-model.lazy="form.formTwo.Assicurato.Provincia" id="Provincia2">
+                            <option v-for="province in formArr.formTwo.Assicurato.provinces" :key="province" :value="province">{{province}}</option>
+                            </select>
                     </div>
                 </div>
             </md-card-content>
@@ -1601,22 +1559,16 @@
                         </md-field>
                     </div>
                      <div class="md-layout-item md-size-50 md-small-size-100">
-                        <md-field>
                             <label for="Provincia1">Provincia</label>
-                            <md-select  v-model.lazy="form.formTwo.Assicurato.Provincia3" id="Provincia3" @md-selected="onProvinciaChange">
-                            <md-option v-for="province in formArr.formTwo.Assicurato.provinces3" :key="province" :value="province">{{province}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Provincia is required</span>
-                        </md-field>
+                            <select  v-model.lazy="form.formTwo.Assicurato.Provincia3" class="formselect" id="Provincia3" v-on:change="onProvinciaChange($event.target.value,'Provincia3')">
+                            <option v-for="province in formArr.formTwo.Assicurato.provinces3" :key="province" :value="province">{{province}}</option>
+                            </select>
                     </div>
                      <div class="md-layout-item md-size-50 md-small-size-100">
-                        <md-field>
                             <label for="Luogodinascita2">Luogo di nascita</label>
-                            <md-select  v-model.lazy="form.formTwo.Assicurato.Luogodinascita" id="Luogodinascita2">
-                            <md-option v-for="commune in formArr.formTwo.Assicurato.communes" :key="commune" :value="commune">{{commune}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Luogo di nascita is required</span>
-                        </md-field>
+                            <select class="formselect" v-model.lazy="form.formTwo.Assicurato.Luogodinascita" id="Luogodinascita2">
+                            <option v-for="commune in formArr.formTwo.Assicurato.communes" :key="commune" :value="commune">{{commune}}</option>
+                            </select>
                     </div>
                 </div>
             </md-card-content>
@@ -2159,22 +2111,16 @@
                         </md-field>
                     </div>
                     <div class="md-layout-item md-size-50 md-small-size-100" v-if='form.formTwo.pageThree.iscontraente != ">"'>
-                        <md-field>
                             <label for="Regione4">Città</label>
-                            <md-select  v-model.lazy="form.formTwo.pageThree.Autorizzazioneal.Citta" id="Regione4" @md-selected="onRegioneChange">
-                            <md-option v-for="region in formArr.formTwo.pageThree.Autorizzazioneal.regions" :key="region" :value="region">{{region}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Regione is required</span>
-                        </md-field>
+                            <select  class="formselect" v-model.lazy="form.formTwo.pageThree.Autorizzazioneal.Citta" id="Regione4" v-on:change="onRegioneChange($event.target.value,'Regione4')">
+                            <option v-for="region in formArr.formTwo.pageThree.Autorizzazioneal.regions" :key="region" :value="region">{{region}}</option>
+                            </select>
                     </div>
                     <div class="md-layout-item md-size-50 md-small-size-100" v-if='form.formTwo.pageThree.iscontraente != ">"'>
-                        <md-field>
                             <label for="Provincia4">Provincia</label>
-                            <md-select  v-model.lazy="form.formTwo.pageThree.Autorizzazioneal.Provincia" id="Provincia4" @md-selected="onProvinciaChange">
-                            <md-option v-for="province in formArr.formTwo.pageThree.Autorizzazioneal.provinces" :key="province" :value="province">{{province}}</md-option>
-                            </md-select>
-                            <span class="md-error">The Provincia is required</span>
-                        </md-field>
+                            <select  class="formselect" v-model.lazy="form.formTwo.pageThree.Autorizzazioneal.Provincia" id="Provincia4">
+                            <option v-for="province in formArr.formTwo.pageThree.Autorizzazioneal.provinces" :key="province" :value="province">{{province}}</option>
+                            </select>
                     </div>
                 </div>
             </md-card-content>
@@ -3235,7 +3181,43 @@
                     </div>
                 </div>
             </md-card-content>
-
+            <md-card-header>
+                <div class="md-title text-center"><h1>Il richiedente dichiara inoltre</h1></div>
+            </md-card-header>
+            <md-card-content>
+                <div class="md-layout-item md-size-100 md-small-size-100">
+                     <md-radio v-model="form.formThree.pageOne.pregressa" value="pregressa">Di non aver nessun tipo di malattia pregressa</md-radio>
+                 </div>
+                 <div class="md-layout-item md-size-100 md-small-size-100">
+                     <md-radio v-model="form.formThree.pageOne.pregressa" value="mpregresse">Di avere le seguenti malattie pregresse</md-radio>
+                 </div>
+                 <div class="md-layout-item md-size-100 md-small-size-100">
+                     <md-radio v-model="form.formThree.pageOne.pregressa" value="tipopregresse">Che i familiari sopra indicati non hanno nessun tipo di malattia pregressa</md-radio>
+                 </div>
+                 <div class="md-layout-item md-size-100 md-small-size-100">
+                     <md-radio v-model="form.formThree.pageOne.pregressa" value="smpregresse">Che i familiari sopra indicati hanno le seguenti malattie pregresse</md-radio>
+                 </div>
+                  <md-field>
+                    <label for="firstName">Familiare 1</label>
+                    <md-input v-model.lazy="form.formThree.pageOne.newFamiliare1" type="text"  md-dense/>
+                 </md-field>
+                  <md-field>
+                    <label for="firstName">Familiare 2</label>
+                    <md-input v-model.lazy="form.formThree.pageOne.newFamiliare2" type="text"  md-dense/>
+                </md-field>
+                    <md-field>
+                    <label for="firstName">Familiare 3</label>
+                    <md-input v-model.lazy="form.formThree.pageOne.newFamiliare3" type="text"  md-dense/>
+                </md-field>
+                    <md-field>
+                    <label for="firstName">Familiare 4</label>
+                    <md-input v-model.lazy="form.formThree.pageOne.newFamiliare4" type="text"  md-dense/>
+                </md-field>
+                    <md-field>
+                    <label for="firstName">Familiare 5</label>
+                    <md-input v-model.lazy="form.formThree.pageOne.newFamiliare5" type="text"  md-dense/>
+                </md-field>
+             </md-card-content>       
             <md-card-header  v-show='isShowHiddenFields==true'>
                 <div class="md-title text-center"><h1>Codice IBAN del conto corrente <sup>(2)</sup></h1></div>
             </md-card-header>
@@ -3943,6 +3925,12 @@
                     Professione5: '',
                     CF5: '',
                     Sussidioscelto5: 'a',
+                    pregressa:'',
+                    newFamiliare1:'',
+                    newFamiliare2:'',
+                    newFamiliare3:'',
+                    newFamiliare4:'',
+                    newFamiliare5:'',
                 },
                 pageThree: {
                     codicepaese: '',
@@ -4219,36 +4207,43 @@
              this.formArr.formTwo.pageThree.Autorizzazioneal.regions = data.regions;
 
         },
-        addProvinces:function(data){
+        addProvinces:function(data,id){
+            if(id== 'Regione1'){
              this.formArr.pageOne.sectionA.provinces = data.provinces;
              this.formArr.pageOne.sectionA.provinces1 = data.provinces;
+            }else if(id=="Regione4"){
+             this.formArr.formTwo.pageThree.Autorizzazioneal.provinces = data.provinces;
+            }else{
              this.formArr.formTwo.Assicurato.provinces = data.provinces;
              this.formArr.formTwo.Assicurato.provinces3 = data.provinces;
-             this.formArr.formTwo.pageThree.Autorizzazioneal.provinces = data.provinces;
+            }
         },
-        addCommunes:function(data){
+        addCommunes:function(data,id){
+            if(id == 'Provincia1'){
              this.formArr.pageOne.sectionA.communes = data.communes;
              this.formArr.pageOne.sectionA.dacommunes = data.communes;
              this.formArr.pageOne.sectionA.localcommunes = data.communes;
              this.formArr.pageOne.sectionA.collcommunes = data.communes;
+            }else{
              this.formArr.pageTwo.sectionB.communes = data.communes;
              this.formArr.formTwo.Assicurato.communes = data.communes;
+            }
         },
-        onRegioneChange:function(data){
+        onRegioneChange:function(data,id){
                  if(data != '--select--' &&  data != ''){    
                 axios.post('/provinces_details', {value:data}).then((response)=>{
                     if(response.data.success)
-                        this.addProvinces(response.data);
+                        this.addProvinces(response.data,id);
                 });
             }      
           
         },
-        onProvinciaChange:function(data){  
+        onProvinciaChange:function(data,id){  
          
         if(data != '--select--' && data != ''){
              axios.post('/commune_details', {value:data}).then((response)=>{
                 if(response.data.success){
-                    this.addCommunes(response.data);
+                    this.addCommunes(response.data,id);
                 }
             });
            }       
@@ -4315,5 +4310,13 @@
     font-weight: 700;
     background: transparent !important;
 }
-
+.formselect{
+    border: transparent;
+    outline: none !important;
+    border-bottom: solid 1px #000;
+    margin-top: 20px;
+}
+label {
+    color: #777;
+}
 </style>

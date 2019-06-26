@@ -1484,20 +1484,16 @@ class RegisterSaleController extends Controller
         return $file_full_path; 
     }
 
-
-    /**
-     * Write infomation on PDF file with cordinates form three
-     * this is a copied function
-     */
-
-    public static function generateSignPDFFormThree($sale)
+    // fill data in form One
+    public static function generateSignPDFFormOne($sale)
     {
-        $pageOne = $sale['personalInfo']['formThree']['pageOne'];
-        // $pageTwo = $sale['personalInfo']['formThree']['pageTwo'];
-        $pageThree = $sale['personalInfo']['formThree']['pageThree'];
-        $pdf = new \setasign\Fpdi\Fpdi();
+
+        $pageOne = $sale['personalInfo']['pageOne'];
+        $pageTwo = $sale['personalInfo']['pageTwo'];
+        $pageThree = $sale['personalInfo']['pageThree'];
         $date = date('Y-m-d');
-        $pageCount = $pdf->setSourceFile(self::template_document_file_three);
+        $pdf = new \setasign\Fpdi\Fpdi();
+        $pageCount = $pdf->setSourceFile(self::template_document_file_one);
         $pdf->SetAutoPageBreak(TRUE, 0);
         for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
             // import a page
@@ -1510,270 +1506,278 @@ class RegisterSaleController extends Controller
             } else {
                 $pdf->AddPage('P', array($size['width'], $size['height']));
             }
+
             // use the imported page
             $pdf->useTemplate($templateId);
 
-            if($pageNo == 1)
-            {
+            if($pageNo == 1) {
                 //Output Name
                 $pdf->SetFont('Helvetica');
-                $pdf->SetFontSize(5.5);
+                $pdf->SetFontSize(6);
                 $cordinates = array(
-                    array(14.22, 40.64, $pageOne['Domandadiadesione']), //Domanda di adesione, numero Convenzione, Cod. Informatore //Domanda di adesione numero
-                    array(68.83, 40.64, $pageOne['Convenzione']), //Convenzione
-                    array(137.67, 40.64, $pageOne['CodInformatore']), //Cod. Informatore
-                    array(16.51, 55.88, $pageOne['CognomeRagioneSociale']), //Dati del Richiedente //Cognome/Ragione Sociale
-                    array(80.26, 55.88, $pageOne['Nome']), //Nome (in caso di azienda inserire Nome e Cognome del legale rapp.)
-                    
-                    array(15.49, 65.28, $pageOne['Luogodinascita']), //Luogo di nascita
-                    array(89.41, 65.28, $pageOne['Prov']), //Prov.
-                    array(102.36, 65.28, $pageOne['Datadinascita']), //Data di nascita
-                    array(127.51, 65.28, $pageOne['Nazionalita']), //Nazionalità
-                    array(146.56, 65.28, $pageOne['CodiceFiscale']), //Codice Fiscale/Partita IVA
-                    array(15.75, 73.41, $pageOne['Indirizzodomicilio']), //Indirizzo domicilio
-                    array(96.01, 73.41, $pageOne['CAP']), //CAP
-                    array(115.57, 73.41, $pageOne['LocalitaFrazione']), //Località/Frazione
-                    array(186.69, 73.41, ""), //Prov.
-                    array(15.75, 82.04, $pageOne['Telefono']), //Telefono
-                    array(52.58, 82.04, $pageOne['Cellulare']), //Cellulare
-                    array(88.14, 82.04, $pageOne['email']), //E-mail
-                    array(169.16, 82.04, $pageOne['Professione']), //Professione
-                    
-                    array(51.31, 90.68, $pageOne['Numerodocumento']), //Numero documento
-                    array(85.34, 90.68, $pageOne['Entedirilasci']), //Ente di rilasci o e luogo
-                    array(141.99, 90.68, $pageOne['Datadirilascio']), //Data di rilascio
-                    array(172.72, 90.68, $pageOne['Datadiscadenza']), //Data di scadenza
-                    array(18.54, 101.09, $pageOne['SussidiopresceltoA']), //Sussidio prescelto //A
-                    array(18.54, 106.43, $pageOne['SussidiopresceltoB']), //B
-                    array(18.54, 110.49, $pageOne['SussidiopresceltoC']), //C
-                    array(67.82, 101.09, $pageOne['ContributoannuoA']), //Contributo annuo //€
-                    array(67.82, 106.43, $pageOne['ContributoannuoB']), //€
-                    array(67.82, 110.49, $pageOne['ContributoannuoC']), //€
-                    
-                    //array(15.24, 122.25, 'X'), //Riepilogo quote e contributi associativi per richiedente socio ordinario o fruitore //Quota associativa di base annuale
-                    array(176.78, 122.25, $pageOne['Quotaassociativadi']), //Riepilogo quote e contributi associativi per richiedente socio ordinario o fruitore //Quota associativa di base annuale
-                    array(176.78, 125.25, $pageOne['Contributoassociativodi']), //Contributo associativo di base annuale
-                    array(176.78, 128.75, $pageOne['Quotaassociativasocio']), //Quota associativa socio fruitore
-                    array(176.78, 132.25, $pageOne['Contributoaggiuntivodel']), //Contributo aggiuntivo del sussidio prescelto (A+B+C)
-                    array(176.78, 135.25, $pageOne['Contributovolontario']), //Contributo volontario
-                    array(176.78, 161.78, $pageOne['Totalequotada']), //Totale quota da versare
-                    // array(104.9, 149.1, '30'), //Riepilogo quote e contributi associativi per richiedente socio partecipante //Contributo associativo di base annuale
-                    array(176.78, 149.1, $pageOne['Contributoassociativodi']), //€
-                    
-                    // array(125.73, 157.48, '32'), //N° dipendenti
-                    // array(49.78, 160.53, '33'), //Totale quota da versare
-                    // array(13.72, 168.89, 'X'), //Addebito SEPA
-                    // array(99.06, 168.89, 'X'), //Bollettino di Conto Corrente Postale
-                    // array(13.72, 170.93, 'X'), //Bonifico Bancario
-                    
-                    array(13.72, 199.39, $pageOne['Familiare1']), //Familiari da garantire //Familiare 1 - Nome e Cognome
-                    array(58.42, 199.39, $pageOne['DataeLuogodi1']), //Data e Luogo di nascita
-                    array(95.25, 199.39, $pageOne['Gradodiparentela1']), //Grado di parentela
-                    array(117.09, 199.39, $pageOne['Professione1']), //Professione
-                    array(136.4, 199.39, $pageOne['CF1']), //C.F.
-                    
-                    array(13.72, 206.5, $pageOne['Familiare2']), //Familiare 2 - Nome e Cognome
-                    array(58.42, 206.5, $pageOne['DataeLuogodi2']), //Data e Luogo di nascita
-                    array(95.25, 206.5, $pageOne['Gradodiparentela2']), //Grado di parentela
-                    array(117.09, 206.5, $pageOne['Professione2']), //Professione
-                    array(136.4, 206.5, $pageOne['CF2']), //C.F.
-                    
-                    array(13.72, 213.11, $pageOne['Familiare3']), //Familiare 3 - Nome e Cognome
-                    array(58.42, 213.11, $pageOne['DataeLuogodi3']), //Data e Luogo di nascita
-                    array(95.25, 213.11, $pageOne['Gradodiparentela3']), //Grado di parentela
-                    array(117.09, 213.11, $pageOne['Professione3']), //Professione
-                    array(136.4, 213.11, $pageOne['CF3']), //C.F.
-                    
-                    array(13.72, 220.22, $pageOne['Familiare4']), //Familiare 4 - Nome e Cognome
-                    array(58.42, 220.22, $pageOne['DataeLuogodi4']), //Data e Luogo di nascita
-                    array(95.25, 220.22, $pageOne['Gradodiparentela4']), //Grado di parentela
-                    array(117.09, 220.22, $pageOne['Professione4']), //Professione
-                    array(136.4, 220.22, $pageOne['CF4']), //C.F.
-                    
-                    array(13.72, 226.82, $pageOne['Familiare5']), //Familiare 5 - Nome e Cognome
-                    array(58.42, 226.82, $pageOne['DataeLuogodi5']), //Data e Luogo di nascita
-                    array(95.25, 226.82, $pageOne['Gradodiparentela5']), //Grado di parentela
-                    array(117.09, 226.82, $pageOne['Professione5']), //Professione
-                    array(136.4, 226.82, $pageOne['CF5']), //C.F.
-                    
-                    array(18.29, 233.43, $date), //Data
-                    array(150.62, 233.43, 'sign'), //Richiedente
-                    array(18.54, 279.4, $date), //Data
-                    array(150.62, 278.64, 'sign'), //Richiedente
+                    array(44.96, 27.94, $pageOne['CodiceIntermediario']), //Codice Intermediario
+                    array(94.74, 27.94, $pageOne['SottoCodice']), //Sotto-codice
+                    array(173.48, 30.73, $date), //Data
+                    array(37.59, 70.1, $pageOne['sectionA']['Cognomeenome1']), //SEZIONE A - DATI IDENTIFICATIVI DEL CONTRAENTE /ADERENTE //Cognome e nome
+                    array(32.51, 75.44, $pageOne['sectionA']['Datadinascita1']), //Data di nascita
+                    array(72.39, 75.44, $pageOne['sectionA']['Luogodinascita1']), //Luogo di nascita
+                    array(153.16, 75.44, $pageOne['sectionA']['Nazionalità1']), //Nazionalità
+                    array(25.4, 81.53, $pageOne['sectionA']['formCodFisc1']), //Cod.Fisc.
+                    array(114.55, 81.28, $pageOne['sectionA']['Tipodocdiidentita1']), //Tipo doc. di identità
+                    array(16.76, 86.87, $pageOne['sectionA']['N1']), //N.
+                    array(51.05, 86.87, $pageOne['sectionA']['Rilasciatoil1']), //Rilasciato il
+                    array(73.15, 86.87, $pageOne['sectionA']['da1']), //da
+                    array(37.59, 92.46, $pageOne['sectionA']['Localitadirilascio1']), //Località di rilascio
+                    array(161.8, 92.2, $pageOne['sectionA']['Datascadenzadocidentita1']), //Data scadenza doc. identità
+                    array(42.16, 98.3, $pageOne['sectionA']['Indirizzodiresidenza1']), //Indirizzo di residenza
+                    array(133.35, 98.3, $pageOne['sectionA']['CAP1']), //CAP
+                    array(157.48, 98.3, $pageOne['sectionA']['Prov1']), //Prov.
+                    array(175.51, 98.3, $pageOne['sectionA']['Stato21']), //Stato2
+                    array(26.16, 103.63, $pageOne['sectionA']['Telefono1']), //Telefono
+                    array(117.09, 103.63, $pageOne['sectionA']['Mail1']), //Mail
+                    array(65.02, 108.97, $pageOne['sectionA']['inqualitadi1']), //SI1, in qualità di // text
+                    array(81.03, 115.32, $pageOne['sectionA']['inquanto1']), //SI1,in quanto // text
+                    array(36.07, 135.89, $pageOne['sectionB']['Cognomeenome1']), //SEZIONE B – ALTRI SOGGETTI //Cognome e nome
+                    array(141.73, 135.89, $pageOne['sectionB']['CodFisc1']), //Cod.Fisc
+                    array(32, 142.24,  $pageOne['sectionB']['Datadinascita1']), //Data di nascita
+                    array(85.85, 142.24, $pageOne['sectionB']['Luogodinascita1']), //Luogo di nascita
+                    // array(127.51, 148.59, '27'), //Paesi Terzi1, quale //text
+                    // array(63.5, 165.35, '28'), //SI1, in qualità di //text
+                    array(36.58, 175.01, $pageOne['sectionB']['Cognomeenome2']), //Cognome e nome
+                    array(141.48, 175.51, $pageOne['sectionB']['CodFisc2']), //Cod.Fisc.
+                    array(32.77, 180.85, $pageOne['sectionB']['Datadinascita2']), //Data di nascita
+                    array(86.36, 181.36, $pageOne['sectionB']['Luogodinascita2']), //Luogo di nascita
+                    // array(125.98, 187.45, '33'), //Paesi Terzi1, quale // text
+                    // array(64.26, 204.22, '34'), //SI1, in qualità di // text
+                    array(35.31, 213.87, $pageOne['sectionB']['Cognomeenome3']), //Cognome e nome
+                    array(141.73, 213.87, $pageOne['sectionB']['CodFisc3']), //Cod.Fisc.
+                    array(32.77, 219.71, $pageOne['sectionB']['Datadinascita3']), //Data di nascita
+                    array(86.11, 219.71, $pageOne['sectionB']['Luogodinascita3']), //Luogo di nascita
+                    // array(125.98, 225.81, '39'), //Paesi Terzi1, quale // text
+                    // array(65.28, 242.82, '40'), //SI1, in qualità di //text
                 );
 
-                if ($pageOne['Domandadiadesione'] == 'socio1') {
-                    $radiobuttons[] = array(60.80, 28.3, '>'); //Socio Ordinario
-                } else if ( $pageOne['Domandadiadesione'] == 'socio2' ) {
-                    $radiobuttons[] = array(99.57, 28.3, '>'); //Socio Partecipante
-                } else {
-                    $radiobuttons[] = array(143.26, 28.3, '>'); //Socio
+                //radio button cordinates
+                $radiobuttons = array(
+                    array(46.74, 148.59, $pageOne['sectionB']['Italia1']), //Paese di Residenza: //Italia
+                    array(71.88, 148.59, $pageOne['sectionB']['UE1']), //UE
+                    array(96.77, 148.59, $pageOne['sectionB']['PaesiTerzi1quale1']), //Paesi Terzi1, quale
+                    array(11.94, 154.69, $pageOne['sectionB']['appartiene1']), //appartiene al nucleo familiare dell’Assicurato
+                    array(88.14, 154.69, $pageOne['sectionB']['harapporti1']), //ha rapporti professionali o d’affari con l’Assicurato
+                    array(11.94, 160.02, $pageOne['sectionB']['noneri1']), //non è riconducibile né all’ambito familiare né professionale1
+                    array(45.97, 187.45, $pageOne['sectionB']['Italia2']), //Paese di Residenza: //Italia
+                    array(71.37, 187.45, $pageOne['sectionB']['UE2']), //UE
+                    array(96.77, 187.45, $pageOne['sectionB']['PaesiTerzi1quale2']), //Paesi Terzi1, quale
+                    array(11.68, 193.04, $pageOne['sectionB']['appartiene2']), //appartiene al nucleo familiare dell’Assicurato
+                    array(87.63, 193.04, $pageOne['sectionB']['harapporti2']), //ha rapporti professionali o d’affari con l’Assicurato
+                    array(11.68, 198.63, $pageOne['sectionB']['noneri2']), //non è riconducibile né all’ambito familiare né professionale1
+                    array(46.23, 225.81, $pageOne['sectionB']['Italia3']), //Paese di Residenza: //Italia
+                    array(71.12, 225.81, $pageOne['sectionB']['UE3']), //UE
+                    array(96.52, 225.81, $pageOne['sectionB']['PaesiTerzi1quale3']), //Paesi Terzi1, quale
+                    array(11.68, 231.65, $pageOne['sectionB']['appartiene3']), //appartiene al nucleo familiare dell’Assicurato
+                    array(87.63, 231.65, $pageOne['sectionB']['harapporti3']), //ha rapporti professionali o d’affari con l’Assicurato
+                    array(11.68, 236.98, $pageOne['sectionB']['noneri3']), //non è riconducibile né all’ambito familiare né professionale1
+                );
+                
+
+                if($pageOne['PresenzafisicadelCliente'] == 'si'){
+                    //Presenza fisica del Cliente //SI
+                    $radiobuttons[] = array(10.75, 47.5, '>');
+                }else{
+                    //NO
+                    $radiobuttons[] = array(31.50, 47.5, '>');
+                     //Se, NO //Firma Digitale
+                    $radiobuttons[] = array(44.45, 53.34, $pageOne['FirmaDigitale']);
+                    //Collegamento Audio/Video1)
+                    $radiobuttons[] = array(71,53.34,$pageOne['CollegamentoAudio']);
+                }
+                if($pageOne['sectionA']['Sesso1'] == 'm'){
+                    $radiobuttons[] = array(76, 81.53, '>'); //Sesso: //M
+                }else{
+                    $radiobuttons[] = array(82.25, 81.53, '>'); //F
+                }
+                if($pageOne['sectionA']['PEP31'] == 'no'){
+                    $radiobuttons[] = array(22.1, 108.97, '>'); //PEP3 //NO
+                }else{
+                    $radiobuttons[] = array(38, 108.97, '>'); //SI1, in qualità di
+                }
+                if($pageOne['sectionA']['IncarichiPubblici4'] == 'no'){
+                    $radiobuttons[] = array(41.91, 115.32, '>'); //Incarichi Pubblici4 //NO
+                }else{
+                    $radiobuttons[] = array(58.67, 115.32, '>'); //SI1,in quanto
                 }
 
-                if ($pageOne['Sesso'] == 'm') {
-                    $radiobuttons[] = array(60.80, 28.3, '>'); //Socio Ordinario
-                } else {
-                    $radiobuttons[] = array(143.26, 28.3, '>'); //Socio
+                if($pageOne['sectionB']['PEP32'] == 'no'){
+                    $radiobuttons[] = array(20.83, 165.35, '>'); //PEP3 //NO
+                }else{
+                    $radiobuttons[] = array(37.59, 165.35, '>'); //SI1, in qualità di
                 }
 
-                if ($pageOne['Tipodocumento'] == 'ci') {
-                    $radiobuttons[] = array(15, 90.93, '>'); //Tipo documento //C.I.
-                } else if ( $pageOne['Tipodocumento'] == 'pat' ) {
-                    $radiobuttons[] = array(25, 90.93, '>'); //PAT
-                } else {
-                    $radiobuttons[] = array(36, 90.93, '>'); //PASS.
+
+                if($pageOne['sectionB']['PEP33'] == 'no'){
+                    $radiobuttons[] = array(20.83, 204.22, '>'); //PEP3 //NO
+                }else{
+                    $radiobuttons[] = array(37.59, 204.22, '>'); //SI1, in qualità di
                 }
 
-                if ($pageOne['CoperturasceltaA'] == 's') {
-                    $radiobuttons[] = array(104.65, 101.25, '>'); //Copertura scelta //Singolo
-                } else {
-                    $radiobuttons[] = array(122.43, 101.25, '>'); //Nucleo
-                }                
-
-                if ($pageOne['CoperturasceltaB'] == 's') {
-                    $radiobuttons[] = array(104.65, 107, '>'); //Singolo
-                } else {
-                    $radiobuttons[] = array(122.43, 107, '>'); //Nucleo
-                }                
-
-                if ($pageOne['CoperturasceltaC'] == 's') {
-                    $radiobuttons[] = array(104.65, 111.75, '>'); //Singolo
-                } else {
-                    $radiobuttons[] = array(122.68, 111.75, '>'); //Nucleo
-                }
-
-                if ($pageOne['Frazionamentodelpagamento'] == 'm') {
-                    $radiobuttons[] = array(144.27, 101.25, '>'); //Mensile
-                } else if ( $pageOne['Frazionamentodelpagamento'] == 't' ) {
-                    $radiobuttons[] = array(171.96, 101.25, '>'); //Trimestrale
-                } else if ( $pageOne['Frazionamentodelpagamento'] == 's' ) {
-                    $radiobuttons[] = array(144.02, 106.25, '>'); //Semestrale
-                } else {
-                    $radiobuttons[] = array(171.96, 106.25, '>'); //Annuale
-                }
-
-                if ($pageOne['richiedentechiede'] == 'se') {
-                    $radiobuttons[] = array(85.34, 185.39, '>'); //Se stesso e i propri familiari
-                } else if ( $pageOne['richiedentechiede'] == 'uno' ) {
-                    $radiobuttons[] = array(129.54, 185.39, '>'); //Uno o più dei suoi familiari
-                } else {
-                    $radiobuttons[] = array(173.74, 185.39, '>'); //Solo se stesso
-                }
-
-                if ($pageOne['Sussidioscelto1'] == 'a') {
-                    $radiobuttons[] = array(180, 199.90, '>'); //A
-                } else if ( $pageOne['Sussidioscelto1'] == 'b' ) {
-                    $radiobuttons[] = array(185, 199.90, '>'); //B
-                } else {
-                    $radiobuttons[] = array(193, 199.90, '>'); //C
-                }
-
-                if ($pageOne['Sussidioscelto2'] == 'a') {
-                    $radiobuttons[] = array(180, 206, '>'); //A
-                } else if ( $pageOne['Sussidioscelto2'] == 'b' ) {
-                    $radiobuttons[] = array(186, 206, '>'); //B
-                } else {
-                    $radiobuttons[] = array(193, 206, '>'); //C
-                }
-
-                if ($pageOne['Sussidioscelto3'] == 'a') {
-                    $radiobuttons[] = array(180, 213, '>'); //A
-                } else if ( $pageOne['Sussidioscelto3'] == 'b' ) {
-                    $radiobuttons[] = array(186, 213, '>'); //B
-                } else {
-                    $radiobuttons[] = array(193, 213, '>'); //C
-                }
-
-                if ($pageOne['Sussidioscelto4'] == 'a') {
-                    $radiobuttons[] = array(180, 220, '>'); //A
-                } else if ( $pageOne['Sussidioscelto4'] == 'b' ) {
-                    $radiobuttons[] = array(186, 220, '>'); //B
-                } else {
-                    $radiobuttons[] = array(193, 220, '>'); //C
-                }
-
-                if ($pageOne['Sussidioscelto5'] == 'a') {
-                    $radiobuttons[] = array(180, 228, '>'); //A
-                } else if ( $pageOne['Sussidioscelto5'] == 'b' ) {
-                    $radiobuttons[] = array(186, 228, '>'); //B
-                } else {
-                    $radiobuttons[] = array(193, 228, '>'); //C
+                if($pageOne['sectionB']['PEP34'] == 'no'){
+                    $radiobuttons[] = array(20.83, 242.82, '>'); //PEP3 //NO
+                }else{
+                    $radiobuttons[] = array(37.59, 242.82, '>'); //SI1, in qualità di
                 }
 
                 foreach($cordinates as $cordinate){
                     self::writeXY($pdf, $cordinate[0], $cordinate[1], $cordinate[2]);
                 }
-
-                foreach ($radiobuttons as $radiobutton) {
+                foreach($radiobuttons as $radiobutton){
                     self::writeXY($pdf, $radiobutton[0], $radiobutton[1], $radiobutton[2]);
                 }
-
-            } else if($pageNo == 2) {
+            } else if ($pageNo == 2) {
                 $pdf->SetFont('Helvetica');
-                $pdf->SetFontSize(5.5);
-                $current_location = self::get_client_location();
-                // $date_location_str = date("d/m/Y") . '  ' . $current_location['country'];
-
-
-                $cordinates = array(
-                    array(27.43, 225.81, $current_location['country']), //Luogo
-                    array(69.34, 225.81, $date), //Data
-                    array(116.84, 225.81, 'sign'), //richiedente
-                    array(28.19, 281.94, $current_location['country']), //Luogo
-                    array(69.85, 281.94, $date), //Data
-                    array(115.32, 281.94, 'sign'), //richiedente
-                );
-
-                foreach($cordinates as $cordinate){
-                    self::writeXY($pdf, $cordinate[0], $cordinate[1], $cordinate[2]);
-                }
-            } else if ($pageNo == 3) {
-                $pdf->SetFont('Helvetica');
-                $pdf->SetFontSize(5.5);
+                $pdf->SetFontSize(6);
                 // $current_location = self::get_client_location();
                 // $date_location_str = date("d/m/Y") . '  ' . $current_location['country'];
                 $cordinates = array(
-                    // array(157.23, 16.51, "1"), //Riferimento Mandato //Cod. Azienda Sia
-                    // array(174.24, 16.51, "2"), //Cod. assegnato al Debitore
-                    array(21.84, 81.53, $pageThree['codicepaese']), //Codice IBAN del conto corrente //codice paese
-                    array(34.8, 81.53, $pageThree['checkdigit']), //check digit
-                    array(46.48, 81.53, $pageThree['CIN']), //CIN
-                    array(53.59, 81.53, $pageThree['ABI']), //ABI
-                    array(84.58, 81.53, $pageThree['CAB']), //CAB
-                    array(115.57, 81.53, $pageThree['Numerodiconto']), //Numero di conto corrente
-                    array(46.48, 110.49, $pageThree['NomeeCognome1']), //Intestazione e indirizzo del Socio //Nome e Cognome/ Ragione Sociale
-                    array(46.48, 119.63, $pageThree['Indirizzo1']), //Indirizzo
-                    array(46.48, 128.78, $pageThree['CAPCitta1']), //CAP/Città
-                    array(46.48, 137.92, $pageThree['Codicefiscale1']), //Codice fiscale
-                    array(46.48, 148.08, $pageThree['Email1']), //Email
-                    array(46.48, 156.46, $pageThree['Cellulare1']), //Cellulare
-                    array(135.13, 111, $pageThree['NomeeCognome2']), //Intestazione e indirizzo dell’intestatario del c/c di addebito //Nome e Cognome/ Ragione Sociale
-                    array(135.13, 119.89, $pageThree['Indirizzo2']), //Indirizzo
-                    array(135.13, 128.27, $pageThree['CAPCitta2']), //CAP/Città
-                    array(135.13, 137.67, $pageThree['Codicefiscale2']), //Codice fiscale
-                    array(135.13, 146.56, $pageThree['Email2']), //Email
-                    array(135.13, 155.45, $pageThree['Cellulare2']), //Cellulare
-                    // array(14.99, 202.44, "X"), //ADESIONE //ADESIONE
-                    // array(152.65, 199.64, "21"), //Debitore
-                    array(40.64, 218.44, $current_location['country']), //Luogo
-                    array(92.71, 218.44, $date), //Data
-                    array(152.65, 218.44, 'sign'), //Debitore
-                    // array(15.24, 241.3, "X"), //REVOCA //REVOCA
-                    array(40.39, 246.89, $current_location['country']), //Luogo
-                    array(93.22, 246.89, $date), //Data
-                    array(154.69, 246.89, 'sign'), //Debitore
+                    array(37.08, 38.35, $pageTwo['sectionB']['Cognomeenome4']), //Cognome e nome
+                    array(140.97, 38.35, $pageTwo['sectionB']['CodFisc4']), //Cod.Fisc.
+                    array(32.26, 43.69, $pageTwo['sectionB']['Datadinascita4']), //Data di nascita
+                    array(85.85, 43.69, $pageTwo['sectionB']['Luogodinascita4']), //Luogo di nascita
+                    // array(66.29, 104.9, "5"), //SI1, in qualità di //text
+                    array(36.83, 76.45, $pageTwo['sectionB']['Cognomeenome5']), //Beneficiario : //Cognome e nome
+                    array(141.99, 76.45, $pageTwo['sectionB']['CodFisc5']), //Cod.Fisc.
+                    array(32.77, 83.06, $pageTwo['sectionB']['Datadinascita5']), //Data di nascita
+                    array(85.85, 83.06, $pageTwo['sectionB']['Luogodinascita5']), //Luogo di nascita
+                    // array(128.78, 89.41, "10"), //Paesi Terzi1, quale // text
+                    array(37.59, 114.81, $pageTwo['sectionB']['Cognomeenome6']), //Il Pagatore (se diverso dal contraente/aderente): //Cognome e nome
+                    array(141.22, 114.81, $pageTwo['sectionB']['CodFisc6']), //Cod.Fisc.
+                    array(32.51, 119.89, $pageTwo['sectionB']['Datadinascita6']), //Data di nascita
+                    array(85.34, 119.89, $pageTwo['sectionB']['Luogodinascita6']), //Luogo di nascita
+                    // array(125.98,126.49, "14"), //Paesi Terzi1, quale // text
+                    // array(72.64, 141.73, "15"), //In ogni caso, specificare il rapporto tra le parti
+                    // array(65.79, 146.81, "16"), //SI1, in qualità di // text
+                    // array(133.35, 166.37, "17"), //Stato Estero1, specificare quale // text
+                    array(14.73, 177.29, $pageTwo['sectionC']['Cognomeenome']), //(Cognome e nome)
+                    array(74.93, 177.29, $pageTwo['sectionC']['CodiceFiscale']), //(Codice Fiscale)
+                    array(136.4, 177.29, $pageTwo['sectionC']['Residenza']), //(Residenza)
+                    array(14.22, 213.87, $pageTwo['sectionC']['Luogoedata']), //Luogo e data
+                    // array(117.6, 213.87, "22"), //Firma del Contraente/aderente
+                    
+                );
+                $radiobuttons = array(
+                    array(45.47, 49.78, $pageTwo['sectionB']['Italia4']), //Paese di Residenza: //Italia
+                    array(70.87, 49.78, $pageTwo['sectionB']['UE4']), //UE
+                    array(96.01, 49.78, $pageTwo['sectionB']['PaesiTerzi1quale4']), //Paesi Terzi1, quale
+                    // array(127.76, 49.78, "X"), //Paesi Terzi1, quale // text
+                    array(11.18, 56.39, $pageTwo['sectionB']['appartiene4']), //appartiene al nucleo familiare dell’Assicurato
+                    array(87.63, 56.39, $pageTwo['sectionB']['harapporti4']), //ha rapporti professionali o d’affari con l’Assicurato
+                    array(11.18, 61.21, $pageTwo['sectionB']['noneri4']), //non è riconducibile né all’ambito familiare né professionale1
+                    
+                    array(45.97, 89.41, $pageTwo['sectionB']['Italia5']), //Paese di Residenza: //Italia
+                    array(70.61, 89.41, $pageTwo['sectionB']['UE5']), //UE
+                    array(96.52, 89.41, $pageTwo['sectionB']['PaesiTerzi1quale5']), //Paesi Terzi1, quale
+                    array(11.43, 95, $pageTwo['sectionB']['appartiene5']), //appartiene al nucleo familiare dell’Assicurato
+                    array(87.63, 95, $pageTwo['sectionB']['harapporti5']), //ha rapporti professionali o d’affari con l’Assicurato
+                    array(11.18, 100.33, $pageTwo['sectionB']['noneri5']), //non è riconducibile né all’ambito familiare né professionale1
+                    // array(64.77, 105.41, "X"), //SI1, in qualità di // text
+                    array(44.96, 126.49, $pageTwo['sectionB']['Italia6']), //Paese di Residenza: //Italia
+                    array(70.61, 126.49, $pageTwo['sectionB']['UE6']), //UE
+                    array(95.76, 126.49, $pageTwo['sectionB']['PaesiTerzi1quale6']), //Paesi Terzi1, quale
+                    array(10.92, 131.06, $pageTwo['sectionB']['appartiene6']), //appartiene al nucleo familiare dell’Assicurato
+                    array(86.61, 131.06, $pageTwo['sectionB']['harapporti6']), //ha rapporti professionali o d’affari con l’Assicurato
+                    array(10.67, 137.16, $pageTwo['sectionB']['noneri6']), //non è riconducibile né all’ambito familiare né professionale1
+                    // array(73.15, 189.99, "X"), //SI1, in qualità di // text
                 );
 
+                if($pageTwo['sectionB']['PEP35'] == 'no'){
+                    $radiobuttons[] = array(20.83, 67.50, ">"); //PEP3 //NO
+                }else{
+                    $radiobuttons[] = array(37.59, 67.50, ">"); //SI1, in qualità di
+                }
+
+                if($pageTwo['sectionB']['PEP36'] == 'no'){
+                    $radiobuttons[] = array(20.83, 105.41, ">"); //PEP3 //NO
+                }else{
+                    $radiobuttons[] = array(37.59, 105.41, ">"); //SI1, in qualità di
+                }
+
+                if($pageTwo['sectionB']['PEP37'] == 'no'){
+                    $radiobuttons[] = array(20.07, 146.81, ">"); //PEP3 //NO
+                }else{
+                    $radiobuttons[] = array(37.59, 146.81, ">"); //SI1, in qualità di
+                }
+
+                if($pageTwo['sectionC']['Istitutodicredito'] == 'Italia'){
+                    $radiobuttons[] = array(74.42, 166.37, ">"); //SEZIONE C – ULTERIORI INFORMAZIONI //Istituto di credito di provenienza/destinazione //Italia
+                }else{
+                    $radiobuttons[] = array(87.12, 166.37, ">"); //Stato Estero1, specificare quale
+                }
+
+                if($pageTwo['sectionC']['TitolareEffettivo'] == 'Unico'){
+                    $radiobuttons[] = array(57.91, 172.47, ">"); //Titolare Effettivo del Rapporto: //Unico Titolare Effettivo
+                }else{
+                    $radiobuttons[] = array(119.63, 172.47, ">"); //Titolare Effettivo unitamente a:
+                }
+
+                if($pageTwo['sectionC']['PEP38'] == 'no'){
+                    $radiobuttons[] = array(23.88, 189.99, ">"); //PEP3 //NO
+                }else{
+                    $radiobuttons[] = array(44.45, 189.99, ">"); //SI1, in qualità di
+                }
 
                 foreach($cordinates as $cordinate){
                     self::writeXY($pdf, $cordinate[0], $cordinate[1], $cordinate[2]);
+                }
+                foreach ($radiobuttons as $radiobutton) {
+                    self::writeXY($pdf, $radiobutton[0], $radiobutton[1], $radiobutton[2]);
+                }
+            } else if ($pageNo == 3) {
+                $pdf->SetFont('Helvetica');
+                $pdf->SetFontSize(6);
+                // $current_location = self::get_client_location();
+                // $date_location_str = date("d/m/Y") . '  ' . $current_location['country'];
+                $cordinates = array(
+                    // array(99.57, 69.34, "1"), //Altre anomalie comportamentali riscontrate1. Specificare // text
+                    // array(160.02, 76.71, "1"), //No1. Specificare il motivo // text
+                    array(29.72, 117.09, $pageThree['sectionD']['Cognome']), //Cognome
+                    array(109.47, 117.09, $pageThree['sectionD']['Nome']), //Nome
+                    array(71.88, 124.21, $pageThree['sectionD']['Codice']), //Codice soggetto incaricato al collocamento
+                    array(143.51, 124.21, $pageThree['sectionD']['Numiscrizione']), //Num. iscrizione RUI
+                    array(92.71, 130.56, $pageThree['sectionD']['Regione']), //Regione di attività del soggetto incaricato del collocamento
+                    array(35.31, 137.92, $pageThree['sectionD']['Luogoedata']), //Luogo e data
+                    // array(110.24, 137.92, "8"), //Timbro/Firma
+                    // array(35.81, 155.19, "9"), //Validazione percorso di Adeguata Verifica //Intermediario
+                    array(126.49, 155.19, $pageThree['sectionD']['TimbroFirma']), //Timbro/Firma
+                    // array(84.58, 181.61, "11"), //Spazio riservato alla Compagnia //Tipo verifica sul nominativo:
+                    array(33.53, 188.21, $pageThree['sectionD']['WCL']), //WCL
+                    array(19.56, 199.64, $pageThree['sectionD']['Altro']), //Altro esito delle verifiche:
+                    
+                );
+                $radiobuttons = array(
+                    array(17.78, 49.78, $pageThree['sectionD']['Normale']), //Comportamento tenuto dal cliente all’instaurazione del rapporto continuativo //Normale
+                    array(17.78, 54.86, $pageThree['sectionD']['Riluttanza']), //Riluttanza e/o reticenza nel fornire le informazioni richieste1
+                    array(17.78, 59.18, $pageThree['sectionD']['Interposizione']), //Interposizione di soggetti terzi senza apparente giustificazione1
+                    array(17.78, 64.77, $pageThree['sectionD']['Ilcliente']), //cliente mostra una inusuale familiarità con le norme antiriciclaggio1
+                    array(17.78, 69.34, $pageThree['sectionD']['Altreanomalie']), //Altre anomalie comportamentali riscontrate1. Specificare
+                );
+
+                if($pageThree['sectionD']['Leinformazioni'] == 'si'){
+                    $radiobuttons[] = array(107.19, 76.71, ">"); //Le informazioni ricevute dal cliente, sono da ritenersi attendibili? //Si
+                }else{
+                    $radiobuttons[] = array(121.92, 76.71, ">"); //No1. Specificare il motivo
+                }
+
+                foreach($cordinates as $cordinate){
+                    self::writeXY($pdf, $cordinate[0], $cordinate[1], $cordinate[2]);
+                }
+                foreach ($radiobuttons as $radiobutton) {
+                    self::writeXY($pdf, $radiobutton[0], $radiobutton[1], $radiobutton[2]);
                 }
             } 
         }
         // Output the new PDF
-        $file_name = uniqid().'form-3';
-        $pdf->Output('testing/' . $file_name . '.pdf', 'F');
-        //Get Full Path of Generated PDF File
+        $file_name = uniqid().'form-1';
+        $pdf->Output('testing/' . $file_name . '.pdf','F');
+        // Get Full Path of Generated PDF File
         $file_full_path = public_path('testing/' . $file_name . '.pdf');
         return $file_full_path;
     }
