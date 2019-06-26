@@ -24,4 +24,4 @@ Technologies Used:
 -   Import  **new_assytech.sql**
 -   Run  **npm install**
 -   Run  **npm run watch**
--   Set  **Namirial Api credentials and domain url ** in registersalecontroller.php
+-   Set  Namirial Api credentials and domain url in registersalecontroller.php
