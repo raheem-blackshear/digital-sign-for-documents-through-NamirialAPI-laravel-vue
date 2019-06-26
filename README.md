@@ -24,3 +24,4 @@ Technologies Used:
 -   Run  **php artisan migrate**
 -   Run  **npm install**
 -   Run  **npm run watch**
+-   Add namirial Api credentials and domain url in registersalecontroller.php
