@@ -21,7 +21,7 @@ Technologies Used:
 -   Copy  **.env.example**  file to  **.env**  and edit database credentials there
 -   Run  **composer install**
 -   Run  **php artisan key:generate**
--   Run  **php artisan migrate**
+-   Import  **new_assytech.sql**
 -   Run  **npm install**
 -   Run  **npm run watch**
--   Add namirial Api credentials and domain url in registersalecontroller.php
+-   Set  **Namirial Api credentials and domain url ** in registersalecontroller.php
